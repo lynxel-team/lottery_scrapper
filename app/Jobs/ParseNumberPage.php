@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Number;
 use Goutte\Client;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 use Illuminate\Bus\Queueable;
@@ -173,6 +174,8 @@ class ParseNumberPage implements ShouldQueue
 
     private function getScrapingIndex()
     {
+        Log::debug("columnCursor: $this->columnCursor");
+        Log::debug("skipStartColumnCount: $this->skipStartColumnCount");
         return ($this->columnCursor === 0) ?
             $this->skipStartColumnCount :
             ($this->skipStartColumnCount + $this->columnCursor * $this->tupleNodesCount + $this->columnCursor * $this->skipMidColumnCount);
@@ -243,6 +246,6 @@ class ParseNumberPage implements ShouldQueue
         if ($this->rowCursor === 0) {
             $this->lastForcedRowIndex = 0;
         }
-        $this->columnCursor = $this->cursor / $this->rowCount;
+        $this->columnCursor = (int)($this->cursor / $this->rowCount);
     }
 }

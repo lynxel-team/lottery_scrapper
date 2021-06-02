@@ -17,11 +17,11 @@ Route::get('/', function () {
     $configP3 = [
         'type'                  => 'p3',
         'url'                   => 'http://crawler.test/p3.htm',
-        'columnCount'           => 4,
-        'rowCount'              => 50,
+        'columnCount'           => 3,
+        'rowCount'              => 53,
         'tupleNodesCount'       => 13,
         'skipHeaderCount'       => 14,
-        'skipMidColumnCount'    => 3,
+        'skipMidColumnCount'    => 5,
         'skipStartColumnCount'  => 1
     ];
     $configP4 = [

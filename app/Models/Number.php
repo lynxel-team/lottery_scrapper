@@ -27,13 +27,14 @@ class Number extends Model
      */
     public static function make(array $nodes, $type): Number
     {
+        Log::debug('-----------NUMBER-----------');
         $currentDataIndex = 0;
         $count = count($nodes);
         $entity = new Number();
         for ($i = 0; $i < $count; $i++) {
             $node = $nodes[$i];
             $content = trim($node->text());
-            Log::debug($content);
+            Log::debug($node->html());
             if (empty($content) && $content !== "0") {
                 continue;
             }
