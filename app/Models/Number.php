@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -31,19 +32,28 @@ class Number extends Model
         $entity = new Number();
         for ($i = 0; $i < $count; $i++) {
             $node = $nodes[$i];
-            $content = $node->text();
-            if (empty($content)) {
+            $content = trim($node->text());
+            Log::debug($content);
+            if (empty($content) && $content !== "0") {
                 continue;
             }
             $value = $node->first()->text();
+            Log::debug($value);
             if ($value === '-') {
                 continue;
             }
+            Log::debug("$type: $value");
 
             switch ($currentDataIndex++) {
                 case 0:
-                    list($day, $month, $year) = explode('/', $value);
-                    $entity->ndate = Carbon::createFromDate($year, $month, $day);
+                    list($month, $day, $year) = explode('/', $value);
+                    if((int)$year > 80) {
+                        $year = "19$year";
+                    }
+                    else {
+                        $year = "20$year";
+                    }
+                    $entity->ndate = Carbon::createFromDate("$year", $month, $day);
                     break;
                 case 1:
                     $entity->section_id = Section::where('code', Str::upper(trim($value)))->first()->id ?? 2;

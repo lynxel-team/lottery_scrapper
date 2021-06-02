@@ -12,13 +12,13 @@ class CreateNumbersTable extends Migration
             $table->bigIncrements('id');
 
             $table->date('ndate');
-            $table->unsignedInteger('hundred');
-            $table->unsignedInteger('ten');
-            $table->unsignedInteger('unit');
-            $table->unsignedInteger('first');
-            $table->unsignedInteger('second');
-            $table->unsignedInteger('third');
-            $table->unsignedInteger('fourth');
+            $table->unsignedInteger('hundred')->nullable();
+            $table->unsignedInteger('ten')->nullable();
+            $table->unsignedInteger('unit')->nullable();
+            $table->unsignedInteger('first')->nullable();
+            $table->unsignedInteger('second')->nullable();
+            $table->unsignedInteger('third')->nullable();
+            $table->unsignedInteger('fourth')->nullable();
 
             $table->foreignId('section_id')
                 ->constrained();

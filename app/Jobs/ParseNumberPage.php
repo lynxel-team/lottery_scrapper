@@ -81,7 +81,44 @@ class ParseNumberPage implements ShouldQueue
         })*/;
         $this->moveToStart();
 
-        $item = $this->nextItem();
+        $this->updateDB();
+    }
+
+    private function updateDB()
+    {
+        do {
+            $synchronized = $this->synchronizeItem($this->nextItem());
+        } while ($synchronized !== null);
+    }
+
+    private function synchronizeItem($item): Number
+    {
+        if ($item !== null) {
+            $number = Number::where('ndate', $item->ndate)
+                ->where('section_id', $item->section_id)
+                ->first();
+            if ($number) {
+                if ($this->type === 'p3' && empty($number->hundred)) {
+                    $number->fill([
+                        'hundred' => $item->hundred,
+                        'ten' => $item->ten,
+                        'unit' => $item->unit,
+                    ]);
+                } else if ($this->type === 'p4' && empty($number->first)) {
+                    $number->fill([
+                        'first' => $item->first,
+                        'second' => $item->second,
+                        'third' => $item->third,
+                        'fourth' => $item->fourth,
+                    ]);
+                }
+                $item = $number->save();
+            }
+            else {
+                $item->save();
+            }
+        }
+        return $item;
     }
 
     private function init()

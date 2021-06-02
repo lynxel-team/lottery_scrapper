@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $config = [
+    $configP3 = [
         'type'                  => 'p3',
         'url'                   => 'http://crawler.test/p3.htm',
         'columnCount'           => 4,
@@ -24,7 +24,21 @@ Route::get('/', function () {
         'skipMidColumnCount'    => 3,
         'skipStartColumnCount'  => 1
     ];
-    \App\Jobs\ParseNumberPage::dispatch($config);
+    $configP4 = [
+        'type'                  => 'p4',
+        'url'                   => 'http://crawler.test/p4.htm',
+        'columnCount'           => 4,
+        'rowCount'              => 50,
+        'tupleNodesCount'       => 17,
+        'skipHeaderCount'       => 14,
+        'skipMidColumnCount'    => 1,
+        'skipStartColumnCount'  => 1
+    ];
+    \App\Jobs\ParseNumberPage::withChain([
+        new \App\Jobs\ParseNumberPage($configP4),
+    ])->dispatch($configP3);
+
+//    \App\Jobs\ParseNumberPage::dispatch($configP4);
     return view('welcome');
 });
 
