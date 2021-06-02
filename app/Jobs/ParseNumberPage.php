@@ -82,7 +82,6 @@ class ParseNumberPage implements ShouldQueue
         $this->moveToStart();
 
         $item = $this->nextItem();
-        dd($item);
     }
 
     private function init()
@@ -114,21 +113,21 @@ class ParseNumberPage implements ShouldQueue
     private function getCellData(): ?array
     {
         $data = [];
-        $tableRows = $this->cachedTables->filterXPath("[$this->tableCursor]//tr");
+        $tableRows = $this->cachedTables->eq($this->tableCursor)->filterXPath("//tr");
         $currentRowCells = [];
         if ($this->lastForcedRowIndex === 0) {
             $this->lastForcedRowIndex = $this->skipHeaderCount;
         }
         do {
             $index = $this->lastForcedRowIndex + $this->rowCursor;
-            $currentRowCells = $tableRows->filterXPath("[$index]//td");
+            $currentRowCells = $tableRows->eq($index)->filterXPath("//td");
         } while ($this->hasNoRowData($currentRowCells));
 
         $scrapIndex = $this->getScrapingIndex();
         if ($scrapIndex < $currentRowCells->count()) {
             for ($i = 0; $i < $this->tupleNodesCount; $i++) {
                 $index = $scrapIndex + $i;
-                $data[$i] = $currentRowCells->filterXPath("[$index]");
+                $data[$i] = $currentRowCells->eq($index);
             }
             return $data;
         }
@@ -144,7 +143,7 @@ class ParseNumberPage implements ShouldQueue
 
     private function hasNoRowData(Crawler $rowDataCrawler): bool
     {
-        $data = $rowDataCrawler->filterXPath("[1]")->text();
+        $data = $rowDataCrawler->eq(1)->text();
         $valid = empty($data);
         if ($valid) {
             ++$this->lastForcedRowIndex;

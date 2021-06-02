@@ -42,7 +42,8 @@ class Number extends Model
 
             switch ($currentDataIndex++) {
                 case 0:
-                    $entity->ndate = Carbon::createFromFormat('m/d/yy', $value);
+                    list($day, $month, $year) = explode('/', $value);
+                    $entity->ndate = Carbon::createFromDate($year, $month, $day);
                     break;
                 case 1:
                     $entity->section_id = Section::where('code', Str::upper(trim($value)))->first()->id ?? 2;
