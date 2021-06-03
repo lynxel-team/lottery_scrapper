@@ -134,9 +134,8 @@ class TupleParser extends Parser
                     'unit' => $unit,
                 ]);
                 $number->save();
-                return $number;
             }
-            return 'stop';
+            return $number;
         }
 
         return Number::create([

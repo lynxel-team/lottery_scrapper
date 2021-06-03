@@ -22,6 +22,7 @@ class ParseNumberPage implements ShouldQueue
     protected $url;
 
     protected $pageParser;
+    protected $pageCount;
 
     /**
      * @var Crawler
@@ -31,6 +32,7 @@ class ParseNumberPage implements ShouldQueue
     public function __construct($config)
     {
         $this->url  = $config['url'];
+        $this->pageCount  = $config['updateCount'];
         $this->pageParser = new PageParser($config);
     }
 
@@ -38,7 +40,9 @@ class ParseNumberPage implements ShouldQueue
     {
         $this->init();
         $tables = $this->crawler->filterXPath('//table');
-        for ($i = 0; $i < $tables->count(); $i++) {
+        $count = $this->pageCount <= 0 ? $tables->count() : min($this->pageCount, $tables->count());
+        for ($i = 0; $i < $count; $i++) {
+            Log::debug("Traversing: table($i)");
             $node = $tables->eq($i);
             $result = $this->pageParser->withCrawler($node)
                 ->parse();

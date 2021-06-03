@@ -4,12 +4,11 @@
 namespace App\Actions;
 
 
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
 
 class PageParser extends Parser
 {
-    protected $skipHeaderCount;
-
     /**
      * @var RowParser $rowParser
      */
@@ -18,7 +17,6 @@ class PageParser extends Parser
     public function __construct($config)
     {
         parent::__construct($config);
-        $this->skipHeaderCount  = $config['skipHeaderCount'];
 
         $this->rowParser = new RowParser($config);
     }
@@ -27,6 +25,7 @@ class PageParser extends Parser
     {
         $nodes = $this->crawler->filterXPath("//tr");
         for ($i = 0; $i < $nodes->count(); $i++) {
+            Log::debug("Traversing: row($i)");
             $node = $nodes->eq($i);
             $result = $this->rowParser->withCrawler($node)
                 ->parse();

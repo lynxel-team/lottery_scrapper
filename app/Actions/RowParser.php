@@ -27,6 +27,7 @@ class RowParser extends Parser
         $tokenPosition = 0;
         do {
             $tokenPosition = $this->findNextDateToken($tokenPosition);
+            Log::debug("Traversing: tokenDate($tokenPosition)");
             $item = $this->tupleParser->withCrawler($this->crawler)
                 ->withStartPosition($tokenPosition)
                 ->parse();
