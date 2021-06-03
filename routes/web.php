@@ -16,17 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $configP3 = [
         'type'                  => 'p3',
-        'url'                   => 'http://crawler.test/p3.htm',
+        'url'                   => 'http://crawler.test/p3_1.htm',
         'columnCount'           => 3,
         'rowCount'              => 53,
         'tupleNodesCount'       => 13,
         'skipHeaderCount'       => 14,
-        'skipMidColumnCount'    => 5,
+        'skipMidColumnCount'    => 3,
         'skipStartColumnCount'  => 1
     ];
     $configP4 = [
         'type'                  => 'p4',
-        'url'                   => 'http://crawler.test/p4.htm',
+        'url'                   => 'http://crawler.test/p4_1.htm',
         'columnCount'           => 4,
         'rowCount'              => 50,
         'tupleNodesCount'       => 17,
@@ -38,7 +38,7 @@ Route::get('/', function () {
         new \App\Jobs\ParseNumberPage($configP4),
     ])->dispatch($configP3);
 
-//    \App\Jobs\ParseNumberPage::dispatch($configP4);
+//    \App\Jobs\ParseNumberPage::dispatch($configP3);
     return view('welcome');
 });
 

@@ -20,7 +20,13 @@ class Number extends Model
         'second',
         'third',
         'fourth',
+        'section_id',
     ];
+
+    public function section(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
 
     /**
      * @var Crawler[] $nodes
