@@ -4,6 +4,8 @@
 namespace App\Actions;
 
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -29,9 +31,21 @@ class PageParser extends Parser
             $node = $nodes->eq($i);
             $result = $this->rowParser->withCrawler($node)
                 ->parse();
-            if ($result === 'stop') {
+            if ($this->checkStopCondition($result)) {
                 return 'stop';
             }
         }
+
+        return null;
+    }
+
+    private function checkStopCondition($result)
+    {
+        if (!empty($result)) {
+            $firstNumber = $result[0];
+            $lastPivotDate = Cache::get("last_number_date");
+            return ($firstNumber && $firstNumber->ndate && !empty($lastPivotDate) && $firstNumber->ndate->isBefore(Carbon::createFromFormat('Y-m-d H:i:s', $lastPivotDate)));
+        }
+        return false;
     }
 }

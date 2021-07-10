@@ -23,6 +23,10 @@ class Number extends Model
         'section_id',
     ];
 
+    protected $casts = [
+        'ndate' => 'datetime'
+    ];
+
     public function section(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Section::class);

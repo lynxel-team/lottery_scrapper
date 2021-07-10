@@ -5,6 +5,8 @@ namespace App\Jobs;
 use App\Actions\PageParser;
 use App\Models\Number;
 use Goutte\Client;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
@@ -21,6 +23,7 @@ class ParseNumberPage implements ShouldQueue
 
     protected $url;
 
+    protected $type;
     protected $pageParser;
     protected $pageCount;
 
@@ -32,6 +35,7 @@ class ParseNumberPage implements ShouldQueue
     public function __construct($config)
     {
         $this->url  = $config['url'];
+        $this->type  = $config['type'];
         $this->pageCount  = $config['updateCount'];
         $this->pageParser = new PageParser($config);
     }

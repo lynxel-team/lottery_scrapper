@@ -171,11 +171,9 @@ class TupleParser extends Parser
                     'section_id' => $section->id,
                 ]);
             }
-
-            return $number;
         }
 
-        return 'stop';
+        return $number;
     }
 
     private function entityIsNotFilled(Number $number)

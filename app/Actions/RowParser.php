@@ -31,12 +31,9 @@ class RowParser extends Parser
             $item = $this->tupleParser->withCrawler($this->crawler)
                 ->withStartPosition($tokenPosition)
                 ->parse();
-            if ($item && $item !== 'stop') {
+            if ($item !== null) {
                 $items[] = $item;
                 $tokenPosition = $this->tupleParser->getEndPosition();
-            }
-            else if ($item === 'stop') {
-                return 'stop';
             }
         } while ($tokenPosition >= 0);
 
