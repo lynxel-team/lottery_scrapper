@@ -152,8 +152,8 @@ class TupleParser extends Parser
         $number = Number::where('ndate', $date->format('Y-m-d'))
             ->where('section_id', $section->id)
             ->first();
-        if ($this->entityIsNotFilled($number)) {
-            if ($number) {
+        if ($number) {
+            if ($this->entityIsNotFilled($number)) {
                 $number->fill([
                     'first' => $first,
                     'second' => $second,
